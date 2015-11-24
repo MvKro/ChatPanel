@@ -12,6 +12,12 @@
 	
 </head>
 <body ng-app="chatApp" ng-controller="chatController">
+	<ul>
+		<li ng-repeat="room in rooms">
+			<span ng-click="joinChat(room)">{{room.$id}}</span>
+		</li>
+	</ul>
+
 	Name: <input type="text" ng-model="new.name">
 	Message: <input type="text" ng-model="new.text">
 	<button ng-click="send(new)">Send</button>

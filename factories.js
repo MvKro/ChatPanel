@@ -1,29 +1,27 @@
 var factories = angular.module('chatApp.factories', ['firebase']);
 
-factories.factory('$message', function($firebase, $firebaseArray, $firebaseObject){
-  var ref = new Firebase('https://chat506.firebaseio.com');
-  var messages = $firebaseArray(ref.child('messages'));
+factories.factory('$chat', function($firebase, $firebaseArray, $firebaseObject){
+  var ref = new Firebase('https://examen-chat.firebaseio.com');
+  var rooms = $firebaseArray(ref.child('rooms'));
+  var messages = null;//$firebaseArray(ref.child('rooms/Room1/messages'));
 
   var create = function(message){
     return messages.$add(message);
   };
-  var get = function(messageId){
-    return $firebaseObject( ref.child('messages').child(messageId) );
-  };
   var eliminate = function(message){
     return messages.$remove(message);
   };
-  // var messages = [
-  //   {'name': 'Pedro', 'text': 'Hola'},
-  //   {'name': 'Maria', 'text': 'Qué tal?'},
-  //   {'name': 'Pedro', 'text': '¿Bien?'},
-  //   {'name': 'Maria', 'text': 'Todo bien por dicha...'}
-  // ];  
+  var loadMessages = function(roomId){
+    messages = $firebaseArray(ref.child('rooms/'+roomId+'/messages'));
+    return messages;
+  };
+
 
   return {
     all: messages,
+    rooms: rooms,
     create: create,
-    get: get,
-    eliminate: eliminate
+    eliminate: eliminate,
+    load: loadMessages
   };
 });
